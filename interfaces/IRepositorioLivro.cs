@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibliotecaApp
+namespace BibliotecaApp.interfaces
 {
     public interface IRepositorioLivro
     {
