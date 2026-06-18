@@ -1,4 +1,6 @@
 ﻿using BibliotecaApp.Excecoes;
+using BibliotecaApp.Interfaces;
+using BibliotecaApp.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
