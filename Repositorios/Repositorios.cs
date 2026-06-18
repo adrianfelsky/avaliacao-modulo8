@@ -9,13 +9,13 @@ namespace BibliotecaApp.Repositorios
 {
     public class RepositorioLivro : IRepositorioLivro
     {
-        private List<Livro> _livros = new List<Livro>();
+        private List<Livros> _livros = new List<Livro>();
 
         public void Adicionar(Livro livro)
         {
             _livros.Add(livro);
         }
-        public List<Livro> ListarTodos()
+        public List<Livros> ListarTodos()
         {
             return _livros.OrderBy(l => l.Titulo).ToList();
         }
