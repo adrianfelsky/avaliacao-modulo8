@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BibliotecaApp.Excecoes
 {
-    public class ProdutoNaoEncontradoException : Exception
+    public class LivroNaoEncontradoException : Exception
     {
-        public ProdutoNaoEncontradoException(int id, string titulo)
+        public LivroNaoEncontradoException(int id, string titulo)
             : base($"Livrp #{id} - \"{titulo}\" não encontrado.") { }
 
     }
