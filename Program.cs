@@ -1,7 +1,58 @@
-﻿void PausaParaLer()
+﻿using BibliotecaApp.Modelos;
+using BibliotecaApp.Repositorios;
+using BibliotecaApp.Servicos;
+using ConsoleTables;
+
+static void PausaParaLer()
 {
     Console.Write("\nDigite ENTER para continuar...");
     Console.ReadLine();
+}
+
+static void ExibirTabela(List<Livro> livros)
+{
+    var table = new ConsoleTable("ID", "Autor", "Titulo", "Ano", "Disponível");
+
+    foreach (var livro in livros)
+    {
+        table.AddRow(livro.ID, livro.Autor, livro.Titulo ,livro.Ano, livro.Disponivel);
+    }
+
+    table.Write();
+}
+
+
+Console.WriteLine("teste");
+List<Livro> livros = new List<Livro>
+{
+    new Livro(1,  "Dom Casmurro",                      "Machado de Assis",          1899, true),
+    new Livro(2,  "Memórias Póstumas de Brás Cubas",   "Machado de Assis",          1881, false),
+    new Livro(3,  "O Cortiço",                          "Aluísio Azevedo",           1890, true),
+    new Livro(4,  "Grande Sertão: Veredas",            "João Guimarães Rosa",       1956, true),
+    new Livro(5,  "Vidas Secas",                        "Graciliano Ramos",          1938, false),
+    new Livro(6,  "Capitães da Areia",                  "Jorge Amado",               1937, true),
+    new Livro(7,  "A Hora da Estrela",                  "Clarice Lispector",         1977, true),
+    new Livro(8,  "O Hobbit",                           "J.R.R. Tolkien",            1937, false),
+    new Livro(9,  "1984",                               "George Orwell",             1949, true),
+    new Livro(10, "O Senhor dos Anéis",                 "J.R.R. Tolkien",            1954, true),
+    new Livro(11, "Cem Anos de Solidão",                "Gabriel García Márquez",    1967, false),
+    new Livro(12, "Crime e Castigo",                    "Fiódor Dostoiévski",        1866, true),
+    new Livro(13, "Orgulho e Preconceito",              "Jane Austen",               1813, true),
+    new Livro(14, "O Pequeno Príncipe",                 "Antoine de Saint-Exupéry",  1943, false),
+    new Livro(15, "Fahrenheit 451",                     "Ray Bradbury",              1953, true),
+    new Livro(16, "Admirável Mundo Novo",               "Aldous Huxley",             1932, true),
+    new Livro(17, "O Conde de Monte Cristo",            "Alexandre Dumas",           1844, false),
+    new Livro(18, "Drácula",                            "Bram Stoker",               1897, true),
+    new Livro(19, "Frankenstein",                       "Mary Shelley",              1818, true),
+    new Livro(20, "A Revolução dos Bichos",             "George Orwell",             1945, false)
+};
+
+
+RepositorioLivro repositorio = new RepositorioLivro();
+
+foreach (var livro in livros)
+{
+    repositorio.Adicionar(livro);
 }
 
 bool sair = false;
@@ -23,27 +74,33 @@ while (!sair)
     {
         case "1":
             //IMPLEMENTAR 
-            PausaParaLer();
             break;
         case "2":
             //IMPLEMENTAR 
-            PausaParaLer();
             break;
         case "3":
-            //IMPLEMENTAR 
-            PausaParaLer();
+            Console.Write("\nDigite o nome do autor: ");
+            string autor = Console.ReadLine();
+            var livrosAutor= repositorio.BuscarPorAutor(autor);
+
+            if (livrosAutor.Any())
+            {
+                Console.WriteLine($"\n--- Livros de \"{autor}\" ---");
+                ExibirTabela(livrosAutor);
+            }
+            else
+            {
+                Console.WriteLine("\nNenhum produto encontrado nesta categoria.");
+            }
             break;
         case "4":
             //IMPLEMENTAR 
-            PausaParaLer();
             break;
         case "5":
             //IMPLEMENTAR 
-            PausaParaLer();
             break;
         case "6":
             //IMPLEMENTAR 
-            PausaParaLer();
             break;
         case "0":
             sair = true;
@@ -52,4 +109,5 @@ while (!sair)
             Console.WriteLine("Digite uma opção válida!");
             break;
     }
+    PausaParaLer();
 }

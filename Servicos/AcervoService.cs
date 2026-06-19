@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BibliotecaApp.Modelos;
 using Newtonsoft.Json;
 
 namespace BibliotecaApp.Servicos
@@ -12,22 +13,22 @@ namespace BibliotecaApp.Servicos
     {
         private const string Arquivo = "acervo.json";
 
-        public List<Livros> Acervo { get; private set; }
+        public List<Livro> Acervo { get; private set; }
 
         public AcervoService()
         {
             Acervo = CarregarAcervo();
         }
 
-        private List<Livros> CarregarAcervo()
+        private List<Livro> CarregarAcervo()
         {
             if (!File.Exists(Arquivo))
-                return new List<Livros>();
+                return new List<Livro>();
 
             string json = File.ReadAllText(Arquivo);
 
-            return JsonConvert.DeserializeObject<List<Livros>>(json)
-                   ?? new List<Livros>();
+            return JsonConvert.DeserializeObject<List<Livro>>(json)
+                   ?? new List<Livro>();
         }
 
         public void SalvarAcervo()
@@ -39,7 +40,7 @@ namespace BibliotecaApp.Servicos
             File.WriteAllText(Arquivo, json);
         }
 
-        public void AdicionarLivro(Livros livro)
+        public void AdicionarLivro(Livro livro)
         {
             Acervo.Add(livro);
             SalvarAcervo();
