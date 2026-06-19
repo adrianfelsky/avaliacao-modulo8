@@ -1,23 +1,21 @@
-﻿using System;
+﻿using BibliotecaApp.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibliotecaApp.interfaces
+namespace BibliotecaApp.Interfaces
 {
     public interface IRepositorioLivro
     {
-        void Adicionar(Livros livro);
+        void Adicionar(Livro livro);
 
-        Livros BuscarPorId(int id);
+        Livro BuscarPorId(int id, string titulo);
 
-        IEnumerable<Livros> ListarTodos();
+        List<Livro> ListarTodos();
 
-        IEnumerable<Livros> BuscarPorAutor(string autor);
+        List<Livro> BuscarPorAutor(string autor);
 
-        Task<IEnumerable<Livros>> ListarDisponiveisAsync();
-
-        Task<string> BuscarDetalhesApiAsync(string titulo);
     }
 }
