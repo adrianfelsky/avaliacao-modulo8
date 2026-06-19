@@ -11,20 +11,20 @@ namespace BibliotecaApp.Repositorios
 {
     public class RepositorioLivro : IRepositorioLivro
     {
-        private List<Livros> _livros = new List<Livro>();
+        private List<Livro> _livros = new List<Livro>();
 
         public void Adicionar(Livro livro)
         {
             _livros.Add(livro);
         }
-        public List<Livros> ListarTodos()
+        public List<Livro> ListarTodos()
         {
             return _livros.OrderBy(l => l.Titulo).ToList();
         }
-        public Livro BuscarPorId(int id)
+        public Livro BuscarPorId(int id, string titulo)
         {
-            Livro livro = _livros.FirstOrDefault(l => l.Id == id);
-            return livro ?? throw new LivroNaoEncontradoException(id);
+            Livro livro = _livros.FirstOrDefault(l => l.ID == id);
+            return livro ?? throw new LivroNaoEncontradoException(id,titulo);
         }              
         public List<Livro> BuscarPorAutor(string autor)
         {
