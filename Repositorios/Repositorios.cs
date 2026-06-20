@@ -21,10 +21,10 @@ namespace BibliotecaApp.Repositorios
         {
             return _livros.OrderBy(l => l.Titulo).ToList();
         }
-        public Livro BuscarPorId(int id, string titulo)
+        public Livro BuscarPorId(int id)
         {
             Livro livro = _livros.FirstOrDefault(l => l.ID == id);
-            return livro ?? throw new LivroNaoEncontradoException(id,titulo);
+            return livro ?? throw new LivroNaoEncontradoException(id);
         }              
         public List<Livro> BuscarPorAutor(string autor)
         {
