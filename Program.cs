@@ -49,6 +49,7 @@ List<Livro> livros = new List<Livro>
 
 
 RepositorioLivro repositorio = new RepositorioLivro();
+BibliotecaApiService apiService = new BibliotecaApiService(new HttpClient());
 
 foreach (var livro in livros)
 {
@@ -129,7 +130,16 @@ while (!sair)
             break;
         case "5":
             Console.Clear();
-            //IMPLEMENTAR -- ADÃO
+            Console.Write("\nDigite o título para buscar na API:\n\n >> ");
+            string tituloBusca = Console.ReadLine();
+            try
+            {
+                await apiService.BuscarDetalhesApiAsync(tituloBusca);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"\n[ERRO] Falha ao acessar a API: {ex.Message}");
+            }
             break;
         case "6":
             Console.Clear();
