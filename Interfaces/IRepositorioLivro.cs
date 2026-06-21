@@ -11,7 +11,7 @@ namespace BibliotecaApp.Interfaces
     {
         void Adicionar(Livro livro);
 
-        Livro BuscarPorId(int id, string titulo);
+        Livro BuscarPorId(int id);
 
         List<Livro> ListarTodos();
 

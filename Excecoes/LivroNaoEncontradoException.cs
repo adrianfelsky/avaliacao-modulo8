@@ -8,8 +8,8 @@ namespace BibliotecaApp.Excecoes
 {
     public class LivroNaoEncontradoException : Exception
     {
-        public LivroNaoEncontradoException(int id, string titulo)
-            : base($"Livro #{id} - \"{titulo}\" não encontrado.") { }
+        public LivroNaoEncontradoException(int id)
+            : base($"Livro #{id} não encontrado.") { }
 
     }
 }

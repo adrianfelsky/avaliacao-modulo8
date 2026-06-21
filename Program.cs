@@ -1,5 +1,6 @@
 ﻿using BibliotecaApp.Modelos;
 using BibliotecaApp.Repositorios;
+using BibliotecaApp.Excecoes;
 using BibliotecaApp.Servicos;
 using ConsoleTables;
 
@@ -22,7 +23,6 @@ static void ExibirTabela(List<Livro> livros)
 }
 
 
-Console.WriteLine("teste");
 List<Livro> livros = new List<Livro>
 {
     new Livro(1,  "Dom Casmurro",                      "Machado de Assis",          1899, true),
@@ -58,56 +58,91 @@ foreach (var livro in livros)
 bool sair = false;
 while (!sair)
 {
-    Console.Clear();
-    Console.WriteLine("1 - Listar Todos ");
-    Console.WriteLine("2 - Buscar por Id");
-    Console.WriteLine("3 - Buscar por Autor");
-    Console.WriteLine("4 - Listar Disponíveis (async) ");
-    Console.WriteLine("5 - Busca na API");
-    Console.WriteLine("6 - Salvar Acervo - R9");
-    Console.WriteLine("0 - sair");
-    Console.Write("Escolha uma opção do Menu: ");
-    string entrada = Console.ReadLine();
 
     Console.Clear();
+    Console.WriteLine("\n-- Sistema de Gerenciamento de Biblioteca --\n");
+    Console.WriteLine(" 1 - Listar Todos ");
+    Console.WriteLine(" 2 - Buscar por Id");
+    Console.WriteLine(" 3 - Buscar por Autor");
+    Console.WriteLine(" 4 - Listar Disponíveis (async) ");
+    Console.WriteLine(" 5 - Busca na API");
+    Console.WriteLine(" 6 - Salvar Acervo - R9");
+    Console.WriteLine(" 0 - sair");
+    Console.Write("\nEscolha uma opção do Menu:\n\n >> ");
+    string entrada = Console.ReadLine();
+
+    //Console.Clear();
     switch (entrada)
     {
         case "1":
-            //IMPLEMENTAR 
+            Console.Clear();
+            Console.WriteLine($"\n--- Livros incluídos na biblioteca ---\n");
+            ExibirTabela(repositorio.ListarTodos());
             break;
         case "2":
-            //IMPLEMENTAR 
-            break;
-        case "3":
-            Console.Write("\nDigite o nome do autor: ");
-            string autor = Console.ReadLine();
-            var livrosAutor= repositorio.BuscarPorAutor(autor);
-
-            if (livrosAutor.Any())
+            Console.Clear();
+            Console.Write("\nDigite o ID do livro:\n\n >> ");
+            if (int.TryParse(Console.ReadLine(), out int idBusca))
             {
-                Console.WriteLine($"\n--- Livros de \"{autor}\" ---");
-                ExibirTabela(livrosAutor);
+                try
+                {
+                    var livroId = repositorio.BuscarPorId(idBusca);
+                    Console.WriteLine("\n--- Produto Encontrado ---\n");
+                    ExibirTabela(new List<Livro> { livroId });
+                }
+                catch (LivroNaoEncontradoException ex)
+                {
+                    Console.WriteLine($"\n[ERRO] {ex.Message}");
+                }
             }
             else
             {
-                Console.WriteLine("\nNenhum produto encontrado nesta categoria.");
+                Console.WriteLine("\n[ERRO] Formato de ID inválido. Digite um número inteiro.");
             }
             break;
+
+        case "3":
+            Console.Clear();
+            Console.Write("\nDigite o nome do autor:\n\n >> ");
+            string autor = Console.ReadLine();
+            var livrosAutor = repositorio.BuscarPorAutor(autor);
+
+            try
+            {
+                if (livrosAutor == null || !livrosAutor.Any())
+                {
+                    throw new AutorNaoEncontradoException(autor);
+                }
+
+                Console.WriteLine($"\n--- Livros de \"{autor}\" ---\n");
+                ExibirTabela(livrosAutor);
+            }
+            catch (AutorNaoEncontradoException ex)
+            {
+                Console.WriteLine($"\n[ERRO] {ex.Message}");
+            }
+            break;
+
         case "4":
-            //IMPLEMENTAR 
+            Console.Clear();
+            //IMPLEMENTAR -- GABRIEL
             break;
         case "5":
-            //IMPLEMENTAR 
+            Console.Clear();
+            //IMPLEMENTAR -- ADÃO
             break;
         case "6":
-            //IMPLEMENTAR 
+            Console.Clear();
+            //IMPLEMENTAR -- EVERSON / JOSÉ
             break;
         case "0":
             sair = true;
+            Console.WriteLine("\nEncerrando programa...");
             break;
         default:
-            Console.WriteLine("Digite uma opção válida!");
+            Console.WriteLine("\nDigite uma opção válida!");
             break;
     }
-    PausaParaLer();
+
+    if (!sair) PausaParaLer();
 }
