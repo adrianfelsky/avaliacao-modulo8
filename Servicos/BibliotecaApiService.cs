@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace BibliotecaApp.Servicos
@@ -14,10 +15,13 @@ namespace BibliotecaApp.Servicos
         {
             _httpClient = httpClient;
         }
-        public async Task<BibliotecaApiService?> BuscarDetalhesApiAsync(string titulo)
+        public async Task BuscarDetalhesApiAsync(string titulo)
         {
             if (string.IsNullOrWhiteSpace(titulo))
-                return null;
+            {
+                Console.WriteLine("\nTítulo inválido.");
+                return;
+            }
 
             string tituloFormatado = Uri.EscapeDataString(titulo);
 
@@ -29,14 +33,23 @@ namespace BibliotecaApp.Servicos
 
             var json = await response.Content.ReadAsStringAsync();
 
-            var resultado = JsonSerializer.Deserialize<BibliotecaApiService>(
-                json,
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+            dynamic resultado = JsonConvert.DeserializeObject(json)!;
 
-            return resultado;
+            if (resultado.docs == null || resultado.docs.Count == 0)
+            {
+                Console.WriteLine("\nNenhum resultado encontrado na API.");
+                return;
+            }
+
+            var primeiro = resultado.docs[0];
+
+            string autor = primeiro.author_name != null
+                ? (string)primeiro.author_name[0]
+                : "Autor desconhecido";
+
+            Console.WriteLine($"Título: {primeiro.title}");
+            Console.WriteLine($"Autor: {autor}");
+            Console.WriteLine($"Ano: {primeiro.first_publish_year}");
         }
 
     }

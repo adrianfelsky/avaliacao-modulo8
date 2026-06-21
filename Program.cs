@@ -1,4 +1,4 @@
-﻿using BibliotecaApp.Modelos;
+using BibliotecaApp.Modelos;
 using BibliotecaApp.Repositorios;
 using BibliotecaApp.Excecoes;
 using BibliotecaApp.Servicos;
@@ -53,6 +53,8 @@ if (acervoService.Acervo.Count == 0)
 {
     acervoService.Acervo.AddRange(livros);
 }
+
+BibliotecaApiService apiService = new BibliotecaApiService(new HttpClient());
 
 RepositorioLivro repositorio = new RepositorioLivro();
 foreach (var livro in acervoService.Acervo)
@@ -114,7 +116,7 @@ while (!sair)
 
             try
             {
-                if (livrosAutor == null || !livrosAutor.Any())
+                if (string.IsNullOrWhiteSpace(autor) || !livrosAutor.Any())
                 {
                     throw new AutorNaoEncontradoException(autor);
                 }
@@ -130,11 +132,32 @@ while (!sair)
 
         case "4":
             Console.Clear();
-            //IMPLEMENTAR -- GABRIEL
+            Console.WriteLine("\nVerificando disponibilidade...");
+
+            var disponiveis = await repositorio.ListarDisponiveisAsync();
+
+            if (disponiveis.Count == 0)
+            {
+                Console.WriteLine("\nNenhum livro disponível no momento.");
+            }
+            else
+            {
+                Console.WriteLine("\n--- Livros disponíveis para empréstimo ---\n");
+                ExibirTabela(disponiveis);
+            }
             break;
         case "5":
             Console.Clear();
-            //IMPLEMENTAR -- ADÃO
+            Console.Write("\nDigite o título para buscar na API:\n\n >> ");
+            string tituloBusca = Console.ReadLine();
+            try
+            {
+                await apiService.BuscarDetalhesApiAsync(tituloBusca);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"\n[ERRO] Falha ao acessar a API: {ex.Message}");
+            }
             break;
         case "6":
             Console.Clear();
