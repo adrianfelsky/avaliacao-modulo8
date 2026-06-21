@@ -25,11 +25,21 @@ namespace BibliotecaApp.Repositorios
         {
             Livro livro = _livros.FirstOrDefault(l => l.ID == id);
             return livro ?? throw new LivroNaoEncontradoException(id);
-        }              
+        }
         public List<Livro> BuscarPorAutor(string autor)
         {
             return _livros
                 .Where(l => l.Autor.ToLower().Contains(autor.ToLower()))
+                .ToList();
+        }
+
+        public async Task<List<Livro>> ListarDisponiveisAsync()
+        {
+            await Task.Delay(500);
+
+            return _livros
+                .Where(l => l.Disponivel)
+                .OrderBy(l => l.Titulo)
                 .ToList();
         }
     }

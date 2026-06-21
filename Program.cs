@@ -49,7 +49,9 @@ List<Livro> livros = new List<Livro>
 
 
 RepositorioLivro repositorio = new RepositorioLivro();
+
 BibliotecaApiService apiService = new BibliotecaApiService(new HttpClient());
+
 
 foreach (var livro in livros)
 {
@@ -110,7 +112,7 @@ while (!sair)
 
             try
             {
-                if (livrosAutor == null || !livrosAutor.Any())
+                if (string.IsNullOrWhiteSpace(autor) || !livrosAutor.Any())
                 {
                     throw new AutorNaoEncontradoException(autor);
                 }
@@ -126,7 +128,19 @@ while (!sair)
 
         case "4":
             Console.Clear();
-            //IMPLEMENTAR -- GABRIEL
+            Console.WriteLine("\nVerificando disponibilidade...");
+
+            var disponiveis = await repositorio.ListarDisponiveisAsync();
+
+            if (disponiveis.Count == 0)
+            {
+                Console.WriteLine("\nNenhum livro disponível no momento.");
+            }
+            else
+            {
+                Console.WriteLine("\n--- Livros disponíveis para empréstimo ---\n");
+                ExibirTabela(disponiveis);
+            }
             break;
         case "5":
             Console.Clear();
