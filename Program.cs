@@ -161,7 +161,15 @@ while (!sair)
             break;
         case "6":
             Console.Clear();
-            //IMPLEMENTAR -- EVERSON / JOSÉ
+            try
+            {
+                acervoService.SalvarAcervo();
+                Console.WriteLine("\n[SUCESSO] Acervo salvo com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n[ERRO] Falha ao salvar o arquivo: {ex.Message}");
+            }
             break;
         case "0":
             sair = true;
