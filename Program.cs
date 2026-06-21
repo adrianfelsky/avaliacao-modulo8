@@ -1,4 +1,4 @@
-﻿using BibliotecaApp.Modelos;
+using BibliotecaApp.Modelos;
 using BibliotecaApp.Repositorios;
 using BibliotecaApp.Excecoes;
 using BibliotecaApp.Servicos;
@@ -47,13 +47,17 @@ List<Livro> livros = new List<Livro>
     new Livro(20, "A Revolução dos Bichos",             "George Orwell",             1945, false)
 };
 
+AcervoService acervoService = new AcervoService();
 
-RepositorioLivro repositorio = new RepositorioLivro();
+if (acervoService.Acervo.Count == 0)
+{
+    acervoService.Acervo.AddRange(livros);
+}
 
 BibliotecaApiService apiService = new BibliotecaApiService(new HttpClient());
 
-
-foreach (var livro in livros)
+RepositorioLivro repositorio = new RepositorioLivro();
+foreach (var livro in acervoService.Acervo)
 {
     repositorio.Adicionar(livro);
 }
