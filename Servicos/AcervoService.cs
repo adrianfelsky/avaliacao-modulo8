@@ -11,7 +11,7 @@ namespace BibliotecaApp.Servicos
 
     public class AcervoService
     {
-        private const string Arquivo = "acervo.json";
+        private static readonly string Arquivo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "acervo.json");
 
         public List<Livro> Acervo { get; private set; }
 
